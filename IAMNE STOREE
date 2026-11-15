@@ -1,0 +1,33 @@
+import os
+import discord
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+client = discord.Client(intents=intents)
+
+@client.event
+async def on_ready():
+    print(f'تم تشغيل البوت بنجاح: {client.user}')
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+
+    if message.content == 'متجر' or message.content == 'الرئيسية':
+        embed = discord.Embed(
+            title="✨ أهلاً بك في متجر إيمان (IMANE STORE) ✨",
+            description="نحن نقدم أفضل الخدمات والمنتجات الرقمية بأفضل الأسعار.",
+            color=0x9b59b6
+        )
+        embed.add_field(name="📌 أقسام المتجر", value="اختر القسم الذي يناسب طلبك من القائمة أدناه.", inline=False)
+        embed.add_field(name="💬 الدعم الفني", value="تواصل معنا في تذاكر الدعم لأي استفسار.", inline=False)
+        embed.set_footer(text="جميع الحقوق محفوظة © IMANE STORE")
+        
+        await message.channel.send(embed=embed)
+
+    elif message.content == 'مرحبا':
+        await message.channel.send('أهلاً بك! أنا أعمل بنجاح 🤖')
+
+client.run(os.getenv('TOKEN'))
